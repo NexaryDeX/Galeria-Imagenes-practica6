@@ -188,7 +188,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Mi Galería</h1>
+        <h1>📸 Mi Galería</h1>
         <div id="gallery" class="gallery"></div>
     </div>
 
@@ -202,4 +202,119 @@
     </div>
 
     <script>
-        // === CARPETA DE IMÁGENES
+        const imageFiles = [
+            'foto1.jpg',
+            'foto2.jpg',
+            'foto3.jpg',
+            'foto4.jpg',
+            'foto5.jpg',
+            'foto6.jpg',
+            'foto7.jpg',
+            'foto8.jpg',
+            'foto9.jpg',
+            'foto10.jpg',
+            'foto11.jpg',
+            'foto12.jpg',
+            'foto13.jpg',
+            'foto14.jpg',
+            'foto15.jpg'
+        ];
+
+        let currentIndex = 0;
+        const gallery = document.getElementById('gallery');
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+        const closeBtn = document.querySelector('.close');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+
+        function loadGallery() {
+            gallery.innerHTML = '';
+            
+            imageFiles.forEach((filename, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                
+                const img = document.createElement('img');
+                img.src = `images/${filename}`;
+                img.alt = filename;
+                
+                img.onerror = function() {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error';
+                    errorDiv.innerHTML = `❌ Error<br><strong>${filename}</strong>`;
+                    this.parentElement.innerHTML = '';
+                    this.parentElement.appendChild(errorDiv);
+                };
+                
+                const name = document.createElement('div');
+                name.className = 'image-name';
+                name.textContent = filename;
+                
+                item.appendChild(img);
+                item.appendChild(name);
+                item.addEventListener('click', () => openModal(index));
+                
+                gallery.appendChild(item);
+            });
+        }
+
+        function openModal(index) {
+            currentIndex = index;
+            modal.style.display = 'block';
+            modalImg.src = `images/${imageFiles[currentIndex]}`;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % imageFiles.length;
+            modalImg.src = `images/${imageFiles[currentIndex]}`;
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + imageFiles.length) % imageFiles.length;
+            modalImg.src = `images/${imageFiles[currentIndex]}`;
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        nextBtn.addEventListener('click', nextImage);
+        prevBtn.addEventListener('click', prevImage);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (modal.style.display === 'block') {
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+                if (e.key === 'Escape') closeModal();
+            }
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        modal.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        modal.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) nextImage();
+            if (touchEndX > touchStartX + 50) prevImage();
+        }
+
+        loadGallery();
+    </script>
+</body>
+</html>
