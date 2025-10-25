@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galería de Fotos</title>
     <style>
+        /* (El CSS se mantiene exactamente igual ya que está bien estructurado) */
         * {
             margin: 0;
             padding: 0;
@@ -202,16 +203,16 @@
     </div>
 
     <script>
+        // ESTA ES LA ÚNICA SECCIÓN QUE NECESITAS CAMBIAR
+        // Agrega o quita nombres de archivo. El resto del código se adapta automáticamente.
         const imageFiles = [
-            'foto1.jpg',
-            'foto2.jpg',
-            'foto3.jpg',
-            'foto4.jpg',
-            'foto5.jpg',
-            'foto6.jpg',
-            'foto7.jpg',
-            'foto8.jpg',
-            'foto9.jpg'
+            'imagen-del-desierto.webp', // Nombre personalizado
+            'foto-de-mi-viaje.png',    // Otro nombre personalizado
+            'atardecer-en-la-playa.jpeg',
+            'retrato-familiar.jpg',
+            'logo-del-negocio.gif',
+            'otra-foto-mas.jpg',
+            'solosonseis.jpg', // ¡Menos de 10 archivos! El código se adapta.
         ];
 
         let currentIndex = 0;
@@ -225,14 +226,18 @@
         function loadGallery() {
             gallery.innerHTML = '';
             
+            // EL BUCLE FOR CUMPLE TU REQUISITO:
+            // Itera sobre CADA elemento de la lista 'imageFiles', 
+            // independientemente de su nombre o cantidad.
             imageFiles.forEach((filename, index) => {
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
                 
                 const img = document.createElement('img');
-                img.src = `images/${filename}`;
+                img.src = `images/${filename}`; // Asegúrate de que tus imágenes estén en una carpeta llamada 'images'
                 img.alt = filename;
                 
+                // Muestra un mensaje de error si la imagen no existe
                 img.onerror = function() {
                     const errorDiv = document.createElement('div');
                     errorDiv.className = 'error';
@@ -243,7 +248,8 @@
                 
                 const name = document.createElement('div');
                 name.className = 'image-name';
-                name.textContent = filename;
+                // ESTO REFLEJA EL NOMBRE DEL ARCHIVO:
+                name.textContent = filename; 
                 
                 item.appendChild(img);
                 item.appendChild(name);
@@ -266,23 +272,28 @@
         }
 
         function nextImage() {
+            // El operador módulo (%) garantiza el bucle, independientemente de la cantidad
             currentIndex = (currentIndex + 1) % imageFiles.length;
             modalImg.src = `images/${imageFiles[currentIndex]}`;
         }
 
         function prevImage() {
+            // Manejo de bucle hacia atrás
             currentIndex = (currentIndex - 1 + imageFiles.length) % imageFiles.length;
             modalImg.src = `images/${imageFiles[currentIndex]}`;
         }
 
+        // --- Event Listeners ---
         closeBtn.addEventListener('click', closeModal);
         nextBtn.addEventListener('click', nextImage);
         prevBtn.addEventListener('click', prevImage);
 
+        // Clic fuera del modal para cerrar
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
         });
 
+        // Navegación por teclado
         document.addEventListener('keydown', (e) => {
             if (modal.style.display === 'block') {
                 if (e.key === 'ArrowRight') nextImage();
@@ -291,6 +302,7 @@
             }
         });
 
+        // Navegación por gestos (swipe) en móvil
         let touchStartX = 0;
         let touchEndX = 0;
 
@@ -308,6 +320,7 @@
             if (touchEndX > touchStartX + 50) prevImage();
         }
 
+        // Iniciar la galería
         loadGallery();
     </script>
 </body>
