@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galería de Fotos</title>
     <style>
-        /* (El CSS se mantiene exactamente igual ya que está bien estructurado) */
         * {
             margin: 0;
             padding: 0;
@@ -189,7 +188,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>📸 Mi Galería</h1>
+        <h1>Mi Galería</h1>
         <div id="gallery" class="gallery"></div>
     </div>
 
@@ -203,125 +202,4 @@
     </div>
 
     <script>
-        // ESTA ES LA ÚNICA SECCIÓN QUE NECESITAS CAMBIAR
-        // Agrega o quita nombres de archivo. El resto del código se adapta automáticamente.
-        const imageFiles = [
-            'imagen-del-desierto.webp', // Nombre personalizado
-            'foto-de-mi-viaje.png',    // Otro nombre personalizado
-            'atardecer-en-la-playa.jpeg',
-            'retrato-familiar.jpg',
-            'logo-del-negocio.gif',
-            'otra-foto-mas.jpg',
-            'solosonseis.jpg', // ¡Menos de 10 archivos! El código se adapta.
-        ];
-
-        let currentIndex = 0;
-        const gallery = document.getElementById('gallery');
-        const modal = document.getElementById('modal');
-        const modalImg = document.getElementById('modal-img');
-        const closeBtn = document.querySelector('.close');
-        const prevBtn = document.querySelector('.prev-btn');
-        const nextBtn = document.querySelector('.next-btn');
-
-        function loadGallery() {
-            gallery.innerHTML = '';
-            
-            // EL BUCLE FOR CUMPLE TU REQUISITO:
-            // Itera sobre CADA elemento de la lista 'imageFiles', 
-            // independientemente de su nombre o cantidad.
-            imageFiles.forEach((filename, index) => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                
-                const img = document.createElement('img');
-                img.src = `images/${filename}`; // Asegúrate de que tus imágenes estén en una carpeta llamada 'images'
-                img.alt = filename;
-                
-                // Muestra un mensaje de error si la imagen no existe
-                img.onerror = function() {
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'error';
-                    errorDiv.innerHTML = `❌ Error<br><strong>${filename}</strong>`;
-                    this.parentElement.innerHTML = '';
-                    this.parentElement.appendChild(errorDiv);
-                };
-                
-                const name = document.createElement('div');
-                name.className = 'image-name';
-                // ESTO REFLEJA EL NOMBRE DEL ARCHIVO:
-                name.textContent = filename; 
-                
-                item.appendChild(img);
-                item.appendChild(name);
-                item.addEventListener('click', () => openModal(index));
-                
-                gallery.appendChild(item);
-            });
-        }
-
-        function openModal(index) {
-            currentIndex = index;
-            modal.style.display = 'block';
-            modalImg.src = `images/${imageFiles[currentIndex]}`;
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function nextImage() {
-            // El operador módulo (%) garantiza el bucle, independientemente de la cantidad
-            currentIndex = (currentIndex + 1) % imageFiles.length;
-            modalImg.src = `images/${imageFiles[currentIndex]}`;
-        }
-
-        function prevImage() {
-            // Manejo de bucle hacia atrás
-            currentIndex = (currentIndex - 1 + imageFiles.length) % imageFiles.length;
-            modalImg.src = `images/${imageFiles[currentIndex]}`;
-        }
-
-        // --- Event Listeners ---
-        closeBtn.addEventListener('click', closeModal);
-        nextBtn.addEventListener('click', nextImage);
-        prevBtn.addEventListener('click', prevImage);
-
-        // Clic fuera del modal para cerrar
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        // Navegación por teclado
-        document.addEventListener('keydown', (e) => {
-            if (modal.style.display === 'block') {
-                if (e.key === 'ArrowRight') nextImage();
-                if (e.key === 'ArrowLeft') prevImage();
-                if (e.key === 'Escape') closeModal();
-            }
-        });
-
-        // Navegación por gestos (swipe) en móvil
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        modal.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        modal.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            if (touchEndX < touchStartX - 50) nextImage();
-            if (touchEndX > touchStartX + 50) prevImage();
-        }
-
-        // Iniciar la galería
-        loadGallery();
-    </script>
-</body>
-</html>
+        // === CARPETA DE IMÁGENES
